@@ -8,6 +8,7 @@
         {% for movie in top_movies %}
             <li>
                 <a href="movie/{{ movie.id }}">{{movie.title}}</a>
+                Average Rating: {{movie.avg_rating|floatformat:2}}
             </li>
         {% endfor %}
     </ol>

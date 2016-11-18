@@ -11,9 +11,11 @@
     <ul>
         <h2>Rater id:{{ rater.id }}</h2>
         {% for rating in all_ratings %}
-            <a href="movie/{{ movie.id }}">{{Movie.title}}</a>
-            <h2>rating: {{ rating.rating }}</h2>
-            <h2>movie: {{ rating.movie_id }}</h2>
+            <h2>Movie:
+            <a href="../movie/{{ rating.movie.id }}/">{{rating.movie_id}}</a>
+            rating: {{ rating.rating }}
+            </h2>
+            <h2>{{Movie.title}}</h2>
         {% endfor %}
         </ul>
 </body>
