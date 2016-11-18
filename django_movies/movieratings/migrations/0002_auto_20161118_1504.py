@@ -27,7 +27,7 @@ def add_rater(apps, schema_editor):
         r = csv.reader(f, delimiter='|')
         Rater = apps.get_model("movieratings", "Rater")
         for i in r:
-            m = Rater(age=i[0], gender=i[1], occupation=i[2], zip_code=i[3])
+            m = Rater(age=i[1], gender=i[2], occupation=i[3], zip_code=i[4])
             m.save()
 
 
