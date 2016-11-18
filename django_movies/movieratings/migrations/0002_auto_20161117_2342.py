@@ -9,7 +9,7 @@ def add_movie(apps, schema_editor):
     with open('/users/hrumba/week4/day2/django_movies/u.item', encoding="latin-1") as f:
         reader = csv.reader(f, delimiter='|')
         for i in reader:
-            movie = Movie(movie_id=i[0], title=i[1])
+            movie = Movie(title=i[1])
             movie.save()
 
 
@@ -18,17 +18,16 @@ def add_rating(apps, schema_editor):
     with open('/users/hrumba/week4/day2/django_movies/u.data', encoding="latin-1") as f:
         reader = csv.reader(f, delimiter='\t')
         for i in reader:
-            rating = Rating(user_id=i[0], movie_id=i[1], rating=i[2], timestamp=time.ctime(int(i[3])))
+            rating = Rating(rater_id=i[0], movie_id=i[1], rating=i[2], timestamp=time.ctime(int(i[3])))
             rating.save()
 
 
 def add_rater(apps, schema_editor):
     with open("/users/hrumba/week4/day2/django_movies/u.user") as f:
-        r = csv.DictReader(f, fieldnames= ['age', 'gender', 'occupation', 'zip_code'],
-        delimiter='|')
+        r = csv.reader(f, delimiter='|')
         Rater = apps.get_model("movieratings", "Rater")
-        for row in r:
-            m = Rater(**row)
+        for i in r:
+            m = Rater(age=i[0], gender=i[1], occupation=i[2], zip_code=i[3])
             m.save()
 
 

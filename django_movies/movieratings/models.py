@@ -1,16 +1,17 @@
 from django.db import models
+from django.urls import reverse
 
-# Create your models here.
 
-# Create your models here.
 class Movie(models.Model):
-    movie_id = models.IntegerField(default=0)
     title = models.CharField(max_length=160)
-    #genres = models.CharField(max_length=160)
+
+
+    @property
+    def get_url(self):
+        return reverse('movie_detail', args=[self.pk])
 
 
 class Rater(models.Model):
-    user_id = models.IntegerField(default=0)
     age = models.IntegerField(default=0)
     gender = models.CharField(max_length=2)
     occupation = models.CharField(max_length=200)
@@ -18,7 +19,7 @@ class Rater(models.Model):
 
 
 class Rating(models.Model):
-    user_id = models.CharField(max_length=8)
-    movie_id = models.IntegerField(default=0)
+    rater = models.ForeignKey(Rater)
+    movie = models.ForeignKey(Movie)
     rating = models.CharField(max_length=5)
-    timestamp = models.CharField(max_length=20)
+    timestamp = models.CharField(max_length=32)
