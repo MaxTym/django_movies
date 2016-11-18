@@ -1,14 +1,30 @@
 from django.db import models
 from django.urls import reverse
-from django.db.models import Avg, Count
+from django.db.models import Count, Avg
 
 class Movie(models.Model):
     title = models.CharField(max_length=160)
 
 
+    def __repr__(self):
+        return "{} {}".format(self.id, self.title)
+
     @property
     def get_url(self):
         return reverse('movie_detail', args=[self.pk])
+
+    @property
+    def rating_count(self):
+        agg_qs = self.rating_set.all().aggregate(rating_count=Count('rating'))
+        return agg_qs['rating_count']
+
+
+    def avg_rating(self):
+        avg = self.rating_set.all().aggregate(Avg('rating'))
+        return round(avg['rating__avg'], 2)
+
+
+
 
 
 class Rater(models.Model):
@@ -16,6 +32,10 @@ class Rater(models.Model):
     gender = models.CharField(max_length=2)
     occupation = models.CharField(max_length=200)
     zip_code = models.CharField(max_length=200)
+
+
+    def __repr__(self):
+        return "{} {} {} {}".format(self.age, self.gender, self.occupation, self.zip_code)
 
 
     @property
@@ -26,11 +46,9 @@ class Rater(models.Model):
 class Rating(models.Model):
     rater = models.ForeignKey(Rater)
     movie = models.ForeignKey(Movie)
-    rating = models.CharField(max_length=5)
+    rating = models.IntegerField(default=0)
     timestamp = models.CharField(max_length=32)
 
 
-    @property
-    def avg_rating(self):
-        avg_rating = self.movie.aggregate(avg_movie_rating=Avg('rating'))
-        return avg_rating['avg_movie_rating']
+    def __repr__(self):
+        return "{} {} {} {}".format(self.rater, self.movie, self.rating, self.timestamp)

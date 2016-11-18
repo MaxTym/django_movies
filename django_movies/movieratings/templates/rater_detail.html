@@ -4,9 +4,17 @@
 </head>
 <body>
     <h1>Rater detail</h1>
-    <h2>{{rater.age}}</h2>
-    <h2>{{rater.gender}}</h2>
-    <h2>{{rater.occupation}}</h2>
-    <h2>{{rater.zip_code}}</h2>
+    <h2>age: {{rater.age}}</h2>
+    <h2>gender: {{rater.gender}}</h2>
+    <h2>occupation: {{rater.occupation}}</h2>
+    <h2>zip code: {{rater.zip_code}}</h2>
+    <ul>
+        <h2>Rater id:{{ rater.id }}</h2>
+        {% for rating in all_ratings %}
+            <a href="movie/{{ movie.id }}">{{Movie.title}}</a>
+            <h2>rating: {{ rating.rating }}</h2>
+            <h2>movie: {{ rating.movie_id }}</h2>
+        {% endfor %}
+        </ul>
 </body>
 </html>

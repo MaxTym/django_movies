@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from movieratings import models
-# Create your views here.
+from .models import Movie, Rater, Rating
 from django.http import HttpResponse
+from django.db.models import Count, Avg
 
 
 def index(request):
@@ -20,9 +21,14 @@ def movie_list(request):
 
 def rater_detail(request, var):
     rater = models.Rater.objects.get(pk=var)
-    return render(request, 'rater_detail.html', {'rater':rater})
+    all_ratings = rater.rating_set.order_by("rating")
+    return render(request, 'rater_detail.html', {'rater':rater, 'all_ratings': all_ratings})
 
 
 def rater_list(request):
     raters = models.Rater.objects.all()
     return render(request, 'rater_list.html', {'raters':raters})
+
+def top_20(request):
+    top_movies = models.Movie.objects.annotate(avg_rating=Avg('rating__rating')).order_by('-avg_rating')[:20]
+    return render(request, 'top_movies.html', {'top_movies':top_movies})
