@@ -9,9 +9,11 @@ class Movie(models.Model):
     def __repr__(self):
         return "{} {}".format(self.id, self.title)
 
+
     @property
     def get_url(self):
         return reverse('movie_detail', args=[self.pk])
+
 
     @property
     def rating_count(self):
@@ -22,9 +24,6 @@ class Movie(models.Model):
     def avg_rating(self):
         avg = self.rating_set.all().aggregate(Avg('rating'))
         return round(avg['rating__avg'], 2)
-
-
-
 
 
 class Rater(models.Model):

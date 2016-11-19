@@ -6,7 +6,8 @@ from django.db.models import Count, Avg
 
 
 def index(request):
-    return HttpResponse("Welcome to a movie ratings site")
+    return render(request, 'index.html')
+    #return HttpResponse("Welcome to a movie ratings site")
 
 
 def movie_detail(request, var):
