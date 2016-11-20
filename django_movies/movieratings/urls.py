@@ -12,4 +12,5 @@ urlpatterns = [
      url(r'^login.html$', views.my_view, name="my_view"),
      url(r'^logout.html$', views.logout_view, name="logout_view"),
      url(r'^registration.html/$', views.register_user, name='register_user'),
+     url(r'^accounts/profile/$', views.profile_view, name='user_profile')
 ]

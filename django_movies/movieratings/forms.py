@@ -12,8 +12,8 @@ class RaterForm(forms.ModelForm):
         model = Rater
         fields = ['age', 'gender', 'occupation', 'zip_code']
 
-
-class RatingForm(forms.ModelForm):
-    class Meta:
-        model = Rating
-        fields = ['rating']
+# 
+# class RatingForm(forms.ModelForm):
+#     class Meta:
+#         model = Rating
+#         fields = ['rating']

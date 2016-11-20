@@ -1,15 +1,15 @@
 from django.shortcuts import render
 from movieratings import models
-
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Count, Avg
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View, RedirectView, ListView
 from django.shortcuts import render, redirect, render_to_response, get_object_or_404
-from .forms import RaterForm, RatingForm
+from .forms import RaterForm
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse
+
 
 
 
@@ -50,13 +50,19 @@ def my_view(request):
     user = authenticate(username=username, password=password)
     if user is not None:
         login(request, user)
-    else:
-        pass
+
+@login_required
+def account_redirect(request):
+    return redirect('account_landing', pk=request.user.pk, name=request.user.id)
 
 
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect('movies:index')
+
+
+def profile_view(request):
+   return render(request, 'user_profile.html')
 
 
 def register_user(request):
