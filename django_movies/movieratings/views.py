@@ -1,13 +1,16 @@
 from django.shortcuts import render
 from movieratings import models
-from .models import Movie, Rater, Rating
-from django.http import HttpResponse
+
+from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Count, Avg
 from django.contrib.auth import authenticate, login, logout
-from .forms import LoginForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View, RedirectView, ListView
 from django.shortcuts import render, redirect, render_to_response, get_object_or_404
+from .forms import NameForm, RaterForm
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse
+
 
 
 def index(request):
@@ -50,3 +53,34 @@ def my_view(request):
     else:
         # Return an 'invalid login' error message.
         ...
+
+
+
+def logout_view(request):
+    logout(request)
+    username = None
+    password = None
+    return HttpResponseRedirect('movies:index')
+
+
+def register_user(request):
+    if request.method == 'POST':
+        rf = RaterForm(request.POST, prefix='rater')
+        uf = UserCreationForm(request.POST, prefix='user')
+        if rf.is_valid() * uf.is_valid():
+            user = uf.save(commit=False)
+            user.save()
+            rater = rf.save(commit=False)
+            rater.user_id = user.id
+            rater.id = user.id
+            rater.save()
+            user = authenticate(username=uf.cleaned_data['username'],
+                                password=uf.cleaned_data['password'],
+                                )
+            login(request, user)
+            return HttpResponseRedirect(reverse('index'))
+    else:
+        rf = RaterForm(prefix='rater')
+        uf = UserCreationForm(prefix='user')
+    context = {'raterform': rf, 'userform': uf}
+    return render(request, 'registration/registration.html', context)

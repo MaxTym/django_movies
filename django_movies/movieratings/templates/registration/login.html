@@ -29,6 +29,14 @@
 <input type="submit" value="login" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
+<form method="post" action="{% url 'register_user' %}">
+{% csrf_token %}
+
+
+<input type="submit" value="sign_up" />
+<input type="hidden" name="next" value="{{ next }}" />
+</form>
+
 
 {# Assumes you setup the password_reset view in your URLconf #}
 <p><a href="{% url 'password_reset' %}">Forgot password</a></p>
