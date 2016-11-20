@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View, RedirectView, ListView
 from django.shortcuts import render, redirect, render_to_response, get_object_or_404
-from .forms import NameForm, RaterForm
+from .forms import RaterForm, RatingForm
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse
 
@@ -51,15 +51,11 @@ def my_view(request):
     if user is not None:
         login(request, user)
     else:
-        # Return an 'invalid login' error message.
-        ...
-
+        pass
 
 
 def logout_view(request):
     logout(request)
-    username = None
-    password = None
     return HttpResponseRedirect('movies:index')
 
 
