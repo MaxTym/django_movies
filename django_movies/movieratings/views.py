@@ -3,6 +3,11 @@ from movieratings import models
 from .models import Movie, Rater, Rating
 from django.http import HttpResponse
 from django.db.models import Count, Avg
+from django.contrib.auth import authenticate, login, logout
+from .forms import LoginForm
+from django.contrib.auth.decorators import login_required
+from django.views.generic import View, RedirectView, ListView
+from django.shortcuts import render, redirect, render_to_response, get_object_or_404
 
 
 def index(request):
@@ -33,3 +38,15 @@ def rater_list(request):
 def top_20(request):
     top_movies = models.Movie.objects.annotate(avg_rating=Avg('rating__rating')).order_by('-avg_rating')[:20]
     return render(request, 'top_movies.html', {'top_movies':top_movies})
+
+
+#@login_required(login_url='/accounts/login/')
+def my_view(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        login(request, user)
+    else:
+        # Return an 'invalid login' error message.
+        ...
