@@ -4,11 +4,13 @@
 </head>
 <body>
     <h1>Rater detail</h1>
+    <h2>Rater id: {{ user.rater.id }}</h2>
     <form action="/login/" method="post">
         {% csrf_token %}
         {{ form }}
         <input type="submit" value="Logout" />
     </form>
+    <a href="../index">Home</a> </h4>
     <h2>age: {{rater.age}}</h2>
     <h2>gender: {{rater.gender}}</h2>
     <h2>occupation: {{rater.occupation}}</h2>

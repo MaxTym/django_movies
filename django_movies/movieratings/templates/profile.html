@@ -1,0 +1,29 @@
+<html>
+{% block content %}
+<head>
+    <title>User Profile</title>
+</head>
+<body>
+        <h3><a href="../../movie_list">Movie list</a>
+            <a href="../../rater_list">Index of Raters</a>
+            <a href="../../top_movies">Top 20 Movies</a>
+            <a href="../../index">Home</a> </h4>
+            <a href="movie/2">Search Movies by Title</a>
+        </h3>
+    <h2>Rater id: {{ user.rater.id }}</h2>
+    <h2>age: {{user.rater.age}}</h2>
+    <h2>gender: {{user.rater.gender}}</h2>
+    <h2>occupation: {{user.rater.occupation}}</h2>
+    <h2>zip code: {{user.rater.zip_code}}</h2>
+    <ul>
+        </ul>
+    <p>These are the movies you've rated:</p>
+    {% for rating in request.user.rater.rating_set.all %}
+    <ul>
+        <a href="../../movie/{{ rating.movie.id }}/">{{rating.movie.title}}</a>
+        {{rating.rating}}
+    </ul>
+    {% endfor %}
+</body>
+{% endblock %}
+</html>

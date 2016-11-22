@@ -9,6 +9,7 @@ from django.shortcuts import render, redirect, render_to_response, get_object_or
 from .forms import RaterForm
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse
+from django.contrib import auth
 
 
 
@@ -51,6 +52,21 @@ def my_view(request):
     if user is not None:
         login(request, user)
 
+
+def login(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = auth.authenticate(username=username, password=password)
+    if user is not None and user.is_active:
+        # Правильный пароль и пользователь "активен"
+        auth.login(request, user)
+        # Перенаправление на "правильную" страницу
+        return HttpResponseRedirect("/account/loggedin/")
+    else:
+        # Отображение страницы с ошибкой
+        return HttpResponseRedirect("/account/invalid/")
+
+
 @login_required
 def account_redirect(request):
     return redirect('account_landing', pk=request.user.pk, name=request.user.id)
@@ -61,8 +77,8 @@ def logout_view(request):
     return HttpResponseRedirect('movies:index')
 
 
-def profile_view(request):
-   return render(request, 'user_profile.html')
+def profile(request):
+    return render(request, 'profile.html')
 
 
 def register_user(request):
@@ -86,3 +102,19 @@ def register_user(request):
         uf = UserCreationForm(prefix='user')
     context = {'raterform': rf, 'userform': uf}
     return render(request, 'registration/registration.html', context)
+
+# 
+# def view_login(request):
+#     if request.method == "POST":
+#         username = request.POST.get('username')
+#         password = request.POST.get('password')
+#         user = authenticate(username=username, password=password)
+#         if user is not None:
+#             login(request, user)
+#             return redirect('/movieratings/profile')
+#         else:
+#             return render(request, "login.html",
+#                           {"failed": True, "username": username})
+#     else:
+#         user_form = LoginForm()
+#         return render(request, "login.html", {'form': user_form})
