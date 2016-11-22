@@ -103,18 +103,8 @@ def register_user(request):
     context = {'raterform': rf, 'userform': uf}
     return render(request, 'registration/registration.html', context)
 
-# 
-# def view_login(request):
-#     if request.method == "POST":
-#         username = request.POST.get('username')
-#         password = request.POST.get('password')
-#         user = authenticate(username=username, password=password)
-#         if user is not None:
-#             login(request, user)
-#             return redirect('/movieratings/profile')
-#         else:
-#             return render(request, "login.html",
-#                           {"failed": True, "username": username})
-#     else:
-#         user_form = LoginForm()
-#         return render(request, "login.html", {'form': user_form})
+
+def add_rating(request):
+    movies = models.Movie.objects.all()
+    context = {'movies': movies}
+    return render(request, 'add_rating.html', context)
