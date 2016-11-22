@@ -8,7 +8,7 @@ class Movie(models.Model):
     title = models.CharField(max_length=160)
 
 
-    def __repr__(self):
+    def __str__(self):
         return "{} {}".format(self.id, self.title)
 
 
@@ -36,7 +36,7 @@ class Rater(models.Model):
     user = models.OneToOneField(User, null=True)
 
 
-    def __repr__(self):
+    def __str__(self):
         return "{} {} {} {}".format(self.age, self.gender, self.occupation, self.zip_code)
 
 
@@ -52,8 +52,12 @@ class Rating(models.Model):
     timestamp = models.CharField(max_length=32)
 
 
-    def __repr__(self):
+    def __str__(self):
         return "{} {} {} {}".format(self.rater, self.movie, self.rating, self.timestamp)
+
+
+class RatingsForm(models.Model):
+    pass
 
 
 def add_user():

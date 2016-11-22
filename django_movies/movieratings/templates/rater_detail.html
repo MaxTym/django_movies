@@ -2,7 +2,7 @@
 <head>
     <title>Rater</title>
 </head>
-<body>
+<body>    {% csrf_token %}
     <h1>Rater detail</h1>
     <h2>Rater id: {{ user.rater.id }}</h2>
     <form action="/login/" method="post">
@@ -19,7 +19,7 @@
         <h2>Rater id:{{ rater.id }}</h2>
         {% for rating in all_ratings %}
             <h2>Movie:
-            <a href="../movie/{{ rating.movie.id }}/">{{rating.movie_id}}</a>
+            <a href="../movie/{{ rating.movie.id }}">{{rating.movie_id}}</a>
             rating: {{ rating.rating }}
             </h2>
             <h2>{{rating.movie.title}}</h2>

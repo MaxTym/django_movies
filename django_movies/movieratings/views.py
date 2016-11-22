@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View, RedirectView, ListView
 from django.shortcuts import render, redirect, render_to_response, get_object_or_404
-from .forms import RaterForm
+from .forms import RaterForm, RatingsForm
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse
 from django.contrib import auth
@@ -105,6 +105,31 @@ def register_user(request):
 
 
 def add_rating(request):
-    movies = models.Movie.objects.all()
-    context = {'movies': movies}
-    return render(request, 'add_rating.html', context)
+    if request.method == 'POST':
+        form = RatingsForm(request.POST)
+        obj = form.save(commit=False)
+        obj.rater = request.user.rater
+        obj.save()
+        return HttpResponseRedirect('accounts/profile/')
+    else:
+        form = RatingsForm()
+        return render(request, 'add_rating.html', {'form': form})
+
+
+def top_20_for_user(request, var):
+   top_movies = models.Movie.objects.annotate(avg_rating=Avg('rating__rating')).order_by('-avg_rating')
+   rater = models.Rater.objects.get(pk=var)
+   all_user_ratings = rater.rating_set.order_by("rating")
+   z = 0
+   personal_list = []
+   while z < 20:
+       for x in top_movies:
+           if x not in all_user_ratings:
+               personal_list.append(x)
+               z += 1
+   return render(request, 'rater_profile.html', {'personal_list':personal_list})
+
+# def add_rating(request):
+#     movies = models.Movie.objects.all()
+#     context = {'movies': movies}
+#     return render(request, 'add_rating.html', context)

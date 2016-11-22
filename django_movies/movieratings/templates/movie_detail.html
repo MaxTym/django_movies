@@ -2,7 +2,7 @@
 <head>
     <title>Movie title</title>
 </head>
-<body>
+<body>    {% csrf_token %}
     <h1>Movie detail</h1>
     <h2>Rater id: {{ user.rater.id }}</h2>
     <a href="../index">Home</a> </h4>
