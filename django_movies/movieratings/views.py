@@ -58,12 +58,9 @@ def login(request):
     password = request.POST['password']
     user = auth.authenticate(username=username, password=password)
     if user is not None and user.is_active:
-        # Правильный пароль и пользователь "активен"
         auth.login(request, user)
-        # Перенаправление на "правильную" страницу
         return HttpResponseRedirect("/account/loggedin/")
     else:
-        # Отображение страницы с ошибкой
         return HttpResponseRedirect("/account/invalid/")
 
 
